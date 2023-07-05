@@ -19,6 +19,9 @@ ser = serial.Serial('COM3', 9600)
 # Initialize timer
 last_switch_time = time()
 
+# Set initial output device
+current_device = 'Realtek HD Audio 2nd output'
+
 while True:
     if ser.inWaiting() > 0:  # if data is available to read
         try:
@@ -27,22 +30,22 @@ while True:
             if "Analog reading = " in data:  # Check if data contains FSR reading
                 fsr_reading = int(data.split("= ")[1])  # Extract the FSR reading from data
                 current_time = time()
-                if (fsr_reading > 12000 and current_time - last_switch_time >= 2):  # Change 2 to any number of seconds you want to wait
-                    print('FSR Reading is above 10000')
-                    device_name = 'Speakers'
-                    success = set_default_audio_output(device_name)
+                if fsr_reading > 12000 and current_time - last_switch_time >= 2 and current_device != 'Speakers':
+                    print('FSR Reading is above 15000')
+                    current_device = 'Speakers'
+                    success = set_default_audio_output(current_device)
                     if success:
-                        print(f"Successfully set '{device_name}' as the default audio output.")
+                        print(f"Successfully set '{current_device}' as the default audio output.")
                         last_switch_time = current_time
                     else:
-                        print(f"Failed to set '{device_name}' as the default audio output.")
-                elif (fsr_reading <= 12000 and current_time - last_switch_time >= 2):
-                    device_name = 'Realtek HD Audio 2nd output'
-                    success = set_default_audio_output(device_name)
+                        print(f"Failed to set '{current_device}' as the default audio output.")
+                elif fsr_reading <= 12000 and current_time - last_switch_time >= 2 and current_device != 'Realtek HD Audio 2nd output':
+                    current_device = 'Realtek HD Audio 2nd output'
+                    success = set_default_audio_output(current_device)
                     if success:
-                        print(f"Successfully set '{device_name}' as the default audio output.")
+                        print(f"Successfully set '{current_device}' as the default audio output.")
                         last_switch_time = current_time
                     else:
-                        print(f"Failed to set '{device_name}' as the default audio output.")
+                        print(f"Failed to set '{current_device}' as the default audio output.")
         except Exception as e:
             print(f"Error decoding data: {e}")
