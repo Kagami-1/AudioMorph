@@ -1,14 +1,23 @@
-import time
 import serial
+import subprocess
+from time import sleep, time
 
+# Function to set default audio output
+def set_default_audio_output(device_name):
+    command = f'nircmd.exe setdefaultsounddevice "{device_name}" 1'
+    try:
+        output = subprocess.check_output(command, stderr=subprocess.STDOUT, universal_newlines=True)
+        print(f"Output from nircmd: {output}")
+        return True
+    except subprocess.CalledProcessError as e:
+        print(f"Failed to execute nircmd. Command: {command}, Error: {str(e)}")
+        return False
+
+# Create a Serial object
 ser = serial.Serial('COM3', 9600)
 
-# add a variable to store the last time you switched outputs
-last_switch_time = time.time()
-# add a variable to store the current audio output device
-current_device = None
-# define a delay (in seconds) that needs to pass before switching again
-delay = 2.0  # adjust this value as needed
+# Initialize timer
+last_switch_time = time()
 
 while True:
     if ser.inWaiting() > 0:  # if data is available to read
@@ -17,21 +26,23 @@ while True:
             print(data)
             if "Analog reading = " in data:  # Check if data contains FSR reading
                 fsr_reading = int(data.split("= ")[1])  # Extract the FSR reading from data
-                if fsr_reading > 12000 and (current_device != 'Speakers' or time.time() - last_switch_time > delay):
+                current_time = time()
+                if (fsr_reading > 12000 and current_time - last_switch_time >= 2):  # Change 2 to any number of seconds you want to wait
                     print('FSR Reading is above 10000')
                     device_name = 'Speakers'
-                elif current_device != 'Realtek HD Audio 2nd output' or time.time() - last_switch_time > delay:
+                    success = set_default_audio_output(device_name)
+                    if success:
+                        print(f"Successfully set '{device_name}' as the default audio output.")
+                        last_switch_time = current_time
+                    else:
+                        print(f"Failed to set '{device_name}' as the default audio output.")
+                elif (fsr_reading <= 12000 and current_time - last_switch_time >= 2):
                     device_name = 'Realtek HD Audio 2nd output'
-                else:
-                    continue  # if not enough time has passed, skip the rest of the loop
-
-                success = set_default_audio_output(device_name)
-                if success:
-                    print(f"Successfully set '{device_name}' as the default audio output.")
-                    # update the last switch time and current device
-                    last_switch_time = time.time()
-                    current_device = device_name
-                else:
-                    print(f"Failed to set '{device_name}' as the default audio output.")
+                    success = set_default_audio_output(device_name)
+                    if success:
+                        print(f"Successfully set '{device_name}' as the default audio output.")
+                        last_switch_time = current_time
+                    else:
+                        print(f"Failed to set '{device_name}' as the default audio output.")
         except Exception as e:
             print(f"Error decoding data: {e}")
