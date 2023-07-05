@@ -65,3 +65,4 @@ def switch_audio_output_device(device_name, current_time):
 
 if __name__ == '__main__':
     main()
+

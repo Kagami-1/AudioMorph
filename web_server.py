@@ -28,7 +28,8 @@ def sendData(message):
         s.sendto(message, addr)
         print('Message sent.')
     except:
-        print('Message not sent.')
+        print('Message not sent. Error: {str(e)}')
+
 
 
 
@@ -37,3 +38,5 @@ try:
     ip = connect()
 except KeyboardInterrupt:
     machine.reset()
+
+

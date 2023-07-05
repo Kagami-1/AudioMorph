@@ -5,10 +5,9 @@ from web_server import connect
 from web_server import sendData
 
 fsrAnalogPin = ADC(Pin(26))  # FSR is connected to GP26
-red_LEDpin = Pin(3, Pin.OUT)  # connect Red LED to GP3
-green_LEDpin = Pin(4, Pin.OUT)  # connect Green LED to GP4
-
-i2c = I2C(0, sda=Pin(8), scl=Pin(9), freq=400000)  # Adjusted SDA and SCL pins
+red_LEDpin = Pin(3, Pin.OUT)
+green_LEDpin = Pin(4, Pin.OUT)
+i2c = I2C(0, sda=Pin(8), scl=Pin(9), freq=400000) 
 oled = SSD1306_I2C(128, 64, i2c)
 
 uart = UART(0, 9600)  # UART setup
@@ -26,8 +25,11 @@ def display_mapping(fsr_reading):
 if __name__=="__main__":
     print(connect())
     connect()
-    sendData(fsrAnalogPin.read_u16())
+    #sendData("nodered")
+    #sendData(str(fsrAnalogPin.read_u16()))
+    
     while True:
+        sendData(str(fsrAnalogPin.read_u16()))
         fsrReading = fsrAnalogPin.read_u16()
         print("Analog reading = ", fsrReading)
 
@@ -46,4 +48,6 @@ if __name__=="__main__":
         display_mapping(fsrReading)
 
         sleep(0.1)
+
+
 
