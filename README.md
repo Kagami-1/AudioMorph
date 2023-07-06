@@ -29,7 +29,7 @@ HeadPhone Stand ||amazon.se | 99 SEK*
 
 **Figure 1**: pi pico wh. 
 
-<img style="display:block; padding:1px;border:1px #eee;width:22%;" src="./images/pi pico wh.png" />
+<img style="display:block; padding:1px;border:1px #eee;width:22%;" src="./images/pi pico WH.png" />
 
 The microcontroller used in this project. It is responsible for reading data from the FSR and determining the necessary audio output switch based on the pressure detected.
 
