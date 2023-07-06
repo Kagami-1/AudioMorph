@@ -1,5 +1,5 @@
 # AudioMorph: FSR-Enabled Sound System Routing
-**Shoeb CHowdhury / SC222RF**
+**Shoeb Chowdhury / SC222RF**
 
 A Smart Headphone Stand that switches audio output using FSR(Force Sensetive Resistor)
 
