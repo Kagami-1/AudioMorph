@@ -8,8 +8,6 @@ A Smart Headphone Stand that switches audio output using FSR(Force Sensetive Res
 # Objective
 
 
-:speech_balloon: Linux saves the current state of the system into the RAM and cuts the power supply of all devices except the RAM. Most other 
-operating system should behave in a similar manner.
 
 # Materials used
 
