@@ -1,3 +1,4 @@
+
 # AudioMorph: FSR-Enabled Sound System Routing
 **Shoeb Chowdhury / SC222RF**
 
@@ -26,47 +27,52 @@ HeadPhone Stand ||amazon.se | 99 SEK*
 \** Components were part of a kit, thus they may be cheaper when bought individually.
 
 ---
-
+![](https://hackmd.io/_uploads/r1IauK4Kh.jpg)
 **Figure 1**: pi pico wh. 
 
-<img style="display:block; padding:1px;border:1px #eee;width:22%;" src="./images/pi pico WH.png" />
+
 
 The microcontroller used in this project. It is responsible for reading data from the FSR and determining the necessary audio output switch based on the pressure detected.
 
-**Figure 2**: sd1306. 
+![](https://hackmd.io/_uploads/S1Gb9tEYn.jpg)**Figure 2**: sd1306. 
 
-<img style="display:block; padding:1px;border:1px #eee;width:25%;" src="./images/sd1306.png" />
+
 
 Device to display the readings of the analogue reading and other animations
 
 
+![](https://hackmd.io/_uploads/Bk_2FYVK3.jpg)
+
 **Figure 3**: Jumper wires. 
 
-<img style="display:block; padding:1px;border:1px #eee;width:20%;" src="./images/JumperWires.png" />
+
 
 Used to connect the Raspberry Pi Pico to the FSR and to provide power.
+![](https://hackmd.io/_uploads/B1pmctNth.jpg)
 
 **Figure 4**: Breadboard. 
 
-<img style="display:block; padding:1px;border:1px #eee;width:30%;" src="./images/BreadBoard.png" />
-
 Serves as a base for connections and allows for easy assembly and disassembly of the system
 
-**Figure 5**: FSRPressure sensitive resistance 0.5". 
+![](https://hackmd.io/_uploads/BySO5KEYn.png)
+**Figure 5**: FSR402 Pressure sensitive resistance 0.5". 
 
-<img style="display:block; padding:1px;border:1px #eee;width:20%;" src="./images/fsr.png" />
 
 The FSR consists of a layer of polymer sandwiched between two conducive layers. This polymer layer decreases in resistance as the pressure applied to the sensor increases. When no pressure is applied to the FSR, its resistance is very high (in the Megaohms range). When pressure is applied, the resistance decreases; the more pressure applied, the lower the resistance.
 
-# Computer setup 
-The initial choice for IDE was VSCode. But after having multiple problems with connectivity I decided to switch to Thonny which is popular IDE for microcontroller and as suggested by the Raspberry Pi pico Getting Started guide. Using Thonny is particularly easy as it can also be used to run local python code as well as python3. Downloading and installing firmware, library for compatible components were also very straightforward and easy.
+![](https://hackmd.io/_uploads/HJW-sKVY3.png)
 
-## Steps - Can be followed on certain Linux distros.
+**Figure 6**: LED. 
+Red and Green LED were used to visualise the signals where if the Audio Output is in Speaker mode or Headphone mode. Green would mean headphone and Red being Speaker.
+
+# Computer setup 
+The initial choice for IDE was VSCode. But after having multiple problems with connectivity and Pymakr I decided to switch to Thonny which is popular IDE for microcontroller and as suggested by the Raspberry Pi pico official "Getting Started" guide. Using Thonny is particularly easy as it can also be used to run local python code as well as python3. Downloading and installing firmware, library for compatible components were also very straightforward only buttons press away.
+
 
 1. Installing Thonny
 
 Link: https://github.com/thonny/thonny/releases/tag/v4.1.1)
-
+Easy to get started. Thonny comes with Python 3.10 built in, so just one simple installer is needed and you're ready to learn programming.
 
 2. Updating firmware
 
@@ -116,7 +122,8 @@ Node-Red can receive packets from the microcontroller through UDP, TCP, MQTT, an
 <img style="display:block;width:40%;" src="./images/functionBlock.png" />
 
 With the message received at Node-Red, 'function' blocks can be used to filter the specific data from the message. After filtered, 
-the message can be sent to chosen dashboard node to be illustrated. Furthermore, as an addendum to showing the data on the dashboard, filtered data can be uploaded to connected MongoDB; Node-Red offers a dedicated block for this. 
+the message can be sent to chosen dashboard node to be illustrated. 
+
 
 
 
