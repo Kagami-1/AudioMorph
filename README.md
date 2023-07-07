@@ -418,7 +418,7 @@ if (fsr_reading > FSR_THRESHOLD and current_time - last_switch_time >= SWITCH_IN
 ```
 ## Visualization
 The visualization of this data is done using Node-Red. Three nodes were used for the dashboard:
-
+![](https://hackmd.io/_uploads/Hy2VU0Ntn.gif)
 Artless-Gauge: for representing the FSR reading.
 Chart: for plotting the data.
 Text-In: for showing which audio output device is currently being used.
