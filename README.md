@@ -395,7 +395,7 @@ def switch_audio_output_device(device_name, current_time):
 
 if __name__ == '__main__':
     main()
-
+```
 The FSR reading that was sent from the microcontroller using uart.write(f'FSR Reading: {fsrReading}\n') [microcontroller code] is captured by the following code:
 
 python
