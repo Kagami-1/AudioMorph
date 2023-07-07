@@ -418,13 +418,14 @@ if (fsr_reading > FSR_THRESHOLD and current_time - last_switch_time >= SWITCH_IN
 ```
 ## Visualization
 The visualization of this data is done using Node-Red. Three nodes were used for the dashboard:
-![](https://hackmd.io/_uploads/Hy2VU0Ntn.gif)
+
+
 Artless-Gauge: for representing the FSR reading.
-Chart: for plotting the data.
-Text-In: for showing which audio output device is currently being used.
+Chart: for plotting the data.\
+Text-In: for showing which audio output device is currently being used.\
 Dashboard:
 
-
+![](https://hackmd.io/_uploads/Hy2VU0Ntn.gif)
 
 Here is a quick look at the dashboard that visualizes the data by presenting which audio device is being used for output, the FSR analog value, and a plot of the value. So, when the headphone is lifted, the audio output also changes.
 
