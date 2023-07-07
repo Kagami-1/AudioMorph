@@ -92,6 +92,7 @@ Thonny comes with Python 3.10 built-in, so a single installer is all that is nee
 The Raspberry Pi Pico WH microcontroller firmware can be updated through Thonny. By pressing the onboard bootsel button and connecting the USB cable to the computer, the Pico WH enters flash memory mode. From there, Thonny can be used to update the firmware, which installs MicroPython.
 
 Here's a quick GIF for better understanding:
+
 ![](https://hackmd.io/_uploads/rkDegc4K3.gif)
 
 **3. Installing Pyserial:**
@@ -215,7 +216,7 @@ Running this script displays the available audio devices. I used this informatio
 
 A separate MicroPython script is used to send data through UDP for Node-RED to listen to. UDP is used because it is run locally for personal use. The information gathered here is non-sensitive and lightweight, but a constant connection is necessary. UDP fulfills these requirements.
 
-```python=
+```python
 import network
 from time import sleep
 import usocket as socket
@@ -263,7 +264,7 @@ The FSR is used to report the pressure difference when the headphone is lifted v
 
 The FSR reading is compared with an arbitrary number, 17000. During initial testing, it was found that when the headphone is resting, the pressure reading was around "~24000 units," whereas it was around "~12000 units" when the headphone is lifted. So, 17000 was used as a middle ground.
 
-```python=
+```python
 from machine import Pin, ADC, PWM, I2C, UART
 from ssd1306 import SSD1306_I2C
 from time import sleep
@@ -401,7 +402,6 @@ if __name__ == '__main__':
 The FSR reading that was sent from the microcontroller using uart.write(f'FSR Reading: {fsrReading}\n') [microcontroller code] is captured by the following code:
 
 ```python
-Copy code
 ser = serial.Serial(SERIAL_PORT, 9600)  # [Desktop Code]
 ```
 Then it strips it to only keep the integer values that range between 26000 and 12000 units. So, every time the value is above 17000, it switches to the "Speaker" audio output.
@@ -411,7 +411,6 @@ While implementing this, one of the problems encountered was the lagging of the 
 By using this logic, the error readings sent by the FSR are minimized as it waits for 2 seconds before changing the default audio output:
 
 ```python
-Copy code
 last_switch_time = time.time()
 current_time = time.time()
 if (fsr_reading > FSR_THRESHOLD and current_time - last_switch_time >= SWITCH_INTERVAL
