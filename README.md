@@ -416,7 +416,7 @@ current_time = time.time()
 if (fsr_reading > FSR_THRESHOLD and current_time - last_switch_time >= SWITCH_INTERVAL
     and current_device != SPEAKERS_DEVICE_NAME):
 ```
-# Visualization
+## Visualization
 The visualization of this data is done using Node-Red. Three nodes were used for the dashboard:
 
 Artless-Gauge: for representing the FSR reading.
@@ -428,7 +428,7 @@ Dashboard:
 
 Here is a quick look at the dashboard that visualizes the data by presenting which audio device is being used for output, the FSR analog value, and a plot of the value. So, when the headphone is lifted, the audio output also changes.
 
-# Further Improvements:
+## Further Improvements:
 Further improvements can be done by investing in a smaller breadboard and housing the whole project in a 9x9cm 3D printed enclosure. Also, the FSR sensor connectivity issue can be addressed by soldering it directly to a jumper wire. Although that was the plan for this course, due to time constraints, it was not possible.
 
 :first_place_medal: Thank you for reading through my project!
