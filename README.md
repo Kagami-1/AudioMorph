@@ -398,22 +398,24 @@ if __name__ == '__main__':
 ```
 The FSR reading that was sent from the microcontroller using uart.write(f'FSR Reading: {fsrReading}\n') [microcontroller code] is captured by the following code:
 
-python
+```python
 Copy code
 ser = serial.Serial(SERIAL_PORT, 9600)  # [Desktop Code]
+```
 Then it strips it to only keep the integer values that range between 26000 and 12000 units. So, every time the value is above 17000, it switches to the "Speaker" audio output.
 
 While implementing this, one of the problems encountered was the lagging of the audio output every couple of seconds because the program was setting the same device repeatedly. This problem was resolved by checking the difference between the last switching time and the current time.
 
 By using this logic, the error readings sent by the FSR are minimized as it waits for 2 seconds before changing the default audio output:
 
-python
+```python
 Copy code
 last_switch_time = time.time()
 current_time = time.time()
 if (fsr_reading > FSR_THRESHOLD and current_time - last_switch_time >= SWITCH_INTERVAL
     and current_device != SPEAKERS_DEVICE_NAME):
-Visualization
+```
+# Visualization
 The visualization of this data is done using Node-Red. Three nodes were used for the dashboard:
 
 Artless-Gauge: for representing the FSR reading.
