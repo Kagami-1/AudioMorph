@@ -1,3 +1,5 @@
+Hackmd Link: https://hackmd.io/@DXeFrrZgQFulz06N82SQHg/HJOFmHbtn
+
 **Shoeb Chowdhury / SC222RF**
 
 A Smart Headphone Stand that switches audio output using FSR (Force Sensitive Resistor).
