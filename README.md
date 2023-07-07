@@ -432,4 +432,5 @@ Here is a quick look at the dashboard that visualizes the data by presenting whi
 ## Further Improvements:
 Further improvements can be done by investing in a smaller breadboard and housing the whole project in a 9x9cm 3D printed enclosure. Also, the FSR sensor connectivity issue can be addressed by soldering it directly to a jumper wire. Although that was the plan for this course, due to time constraints, it was not possible.
 
-:first_place_medal: Thank you for reading through my project!
+🥇 Thank you for reading through my project!
+
