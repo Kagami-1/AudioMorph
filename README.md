@@ -318,4 +318,114 @@ if __name__ == "__main__":
         sleep(0.1)
 ```
 
-In this code, the grammar and punctuation have been corrected.
+:point_right: This code also sends in the data for Node-Red to visualise 
+```python
+sendData(str(fsrReading))"and show which will be shown later.
+```
+
+**4. Changing Audio Output (Desktop):**
+
+Although it might seem like a lot of things are happening here, it is actually quite simple. It will be further explained after the code:
+
+```python
+import serial
+import subprocess
+import time
+
+SERIAL_PORT = 'COM3'
+SPEAKERS_DEVICE_NAME = 'Speakers'
+HEADPHONE = 'Realtek HD Audio 2nd output'
+NIRCMD_PATH = 'nircmd.exe'
+NIRCMD_COMMAND_TEMPLATE = f'{NIRCMD_PATH} setdefaultsounddevice "{{device_name}}" 1'
+FSR_THRESHOLD = 17000
+SWITCH_INTERVAL = 2  # seconds to wait before changing
+
+def set_default_audio_output(device_name):
+    """Sets the default audio output."""
+    command = NIRCMD_COMMAND_TEMPLATE.format(device_name=device_name)
+    try:
+        output = subprocess.check_output(
+            command, stderr=subprocess.STDOUT, universal_newlines=True)
+        print(f'Output from nircmd: {output}')
+        return True
+    except subprocess.CalledProcessError as e:
+        print(f'Failed to execute nircmd. Command: {command}, Error: {str(e)}')
+        return False
+
+def main():
+    """Main function to run the script."""
+    # Create a Serial object
+    ser = serial.Serial(SERIAL_PORT, 9600)
+
+    # Initialize timer
+    last_switch_time = time.time()
+
+    # Set initial output device
+    current_device = HEADPHONE
+
+    while True:
+        if ser.inWaiting() > 0:  # if data is available to read
+            try:
+                data = ser.readline().decode('utf-8').strip()  # read a line, decode to string, and strip newline
+                print(data)
+                if 'Analog reading = ' in data:  # Check if data contains FSR reading
+                    fsr_reading = int(data.split('=')[1])  # Extract the FSR reading from data
+                    current_time = time.time()
+                    if (fsr_reading > FSR_THRESHOLD and current_time - last_switch_time >= SWITCH_INTERVAL
+                            and current_device != SPEAKERS_DEVICE_NAME):
+                        current_device = SPEAKERS_DEVICE_NAME
+                        if switch_audio_output_device(current_device, current_time):
+                            last_switch_time = current_time
+                    elif (fsr_reading <= FSR_THRESHOLD and current_time - last_switch_time >= SWITCH_INTERVAL
+                          and current_device != HEADPHONE):
+                        current_device = HEADPHONE
+                        if switch_audio_output_device(current_device, current_time):
+                            last_switch_time = current_time
+            except Exception as e:
+                print(f'Error decoding data: {e}')
+
+def switch_audio_output_device(device_name, current_time):
+    """Switches the audio output device and returns the success status."""
+    success = set_default_audio_output(device_name)
+    if success:
+        print(f'Successfully set {device_name} as the default audio output.')
+    else:
+        print(f'Failed to set {device_name} as the default audio output.')
+    return success
+
+if __name__ == '__main__':
+    main()
+
+The FSR reading that was sent from the microcontroller using uart.write(f'FSR Reading: {fsrReading}\n') [microcontroller code] is captured by the following code:
+
+python
+Copy code
+ser = serial.Serial(SERIAL_PORT, 9600)  # [Desktop Code]
+Then it strips it to only keep the integer values that range between 26000 and 12000 units. So, every time the value is above 17000, it switches to the "Speaker" audio output.
+
+While implementing this, one of the problems encountered was the lagging of the audio output every couple of seconds because the program was setting the same device repeatedly. This problem was resolved by checking the difference between the last switching time and the current time.
+
+By using this logic, the error readings sent by the FSR are minimized as it waits for 2 seconds before changing the default audio output:
+
+python
+Copy code
+last_switch_time = time.time()
+current_time = time.time()
+if (fsr_reading > FSR_THRESHOLD and current_time - last_switch_time >= SWITCH_INTERVAL
+    and current_device != SPEAKERS_DEVICE_NAME):
+Visualization
+The visualization of this data is done using Node-Red. Three nodes were used for the dashboard:
+
+Artless-Gauge: for representing the FSR reading.
+Chart: for plotting the data.
+Text-In: for showing which audio output device is currently being used.
+Dashboard:
+
+
+
+Here is a quick look at the dashboard that visualizes the data by presenting which audio device is being used for output, the FSR analog value, and a plot of the value. So, when the headphone is lifted, the audio output also changes.
+
+Further Improvements
+Further improvements can be done by investing in a smaller breadboard and housing the whole project in a 9x9cm 3D printed enclosure. Also, the FSR sensor connectivity issue can be addressed by soldering it directly to a jumper wire. Although that was the plan for this course, due to time constraints, it was not possible.
+
+:first_place_medal: Thank you for reading through my project!
