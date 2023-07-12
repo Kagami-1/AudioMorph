@@ -38,8 +38,8 @@ def main():
             try:
                 data = ser.readline().decode('utf-8').strip()  # read a line, decode to string and strip newline
                 print(data)
-                if 'Analog reading = ' in data:  # Check if data contains FSR reading
-                    fsr_reading = int(data.split('=')[1])  # Extract the FSR reading from data
+                if 'FSR Reading : ' in data:  # Check if data contains FSR reading
+                    fsr_reading = int(data.split(':')[1])  # Extract the FSR reading from data
                     current_time = time.time()
                     if (fsr_reading > FSR_THRESHOLD and current_time - last_switch_time >= SWITCH_INTERVAL
                             and current_device != SPEAKERS_DEVICE_NAME):
